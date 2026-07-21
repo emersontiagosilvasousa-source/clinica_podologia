@@ -1,25 +1,407 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Clínica de Podologia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --bg: #f4faf7;
+            --branco: #ffffff;
+            --verde: #10b981;
+            --verde-escuro: #059669;
+            --verde-claro: #d1fae5;
+            --verde-agua: #34d399;
+            --texto: #1f2937;
+            --suave: #6b7280;
+            --borda: #e5e7eb;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--texto);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+
+            background: rgba(255, 255, 255, .15);
+
+            border: 1px solid rgba(255, 255, 255, .25);
+
+            border-radius: 20px;
+
+            padding: 12px;
+
+            backdrop-filter: blur(10px);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, .15);
+        }
+
+        /* ===================== LADO ESQUERDO (PAINEL / DASHBOARD MOCK) ===================== */
+        .painel {
+            flex: 1.2;
+            position: relative;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            background: linear-gradient(160deg, #059669 0%, #10b981 55%, #34d399 100%);
+            color: #fff;
+        }
+
+        /* círculos decorativos suaves */
+        .painel::before {
+            content: "";
+            position: absolute;
+            width: 460px;
+            height: 460px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            top: -140px;
+            right: -120px;
+            animation: flutuar 9s ease-in-out infinite;
+        }
+
+        .painel::after {
+            content: "";
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.10);
+            bottom: -100px;
+            left: -80px;
+            animation: flutuar 11s ease-in-out infinite reverse;
+        }
+
+        @keyframes flutuar {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(30px, 25px);
+            }
+        }
+
+        .painel .topo,
+        .painel .chamada,
+        .painel .rodape-painel {
+            position: relative;
+            z-index: 2;
+        }
+
+        .painel .marca {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .painel .marca .icone {
+            font-size: 26px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .painel .marca h1 {
+            font-size: 20px;
+        }
+
+        .painel .marca span {
+            font-size: 12px;
+            opacity: .85;
+        }
+
+        .painel .chamada h2 {
+            font-size: 34px;
+            line-height: 1.25;
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
+
+        .painel .chamada p {
+            font-size: 15px;
+            max-width: 400px;
+            opacity: .92;
+        }
+
+        /* mini cards de preview */
+        .preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 36px 0;
+        }
+
+        .mini {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            padding: 16px;
+            backdrop-filter: blur(8px);
+        }
+
+        .mini .emoji {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .mini .num {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .mini small {
+            color: rgba(255, 255, 255, .85);
+            font-size: 12px;
+        }
+
+        .painel .rodape-painel {
+            font-size: 12px;
+            opacity: .8;
+        }
+
+        /* ===================== LADO DIREITO (FORMULÁRIO) ===================== */
+        .form-lado {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: var(--branco);
+        }
+
+        .form-box {
+            width: 100%;
+            max-width: 360px;
+            animation: entrada .6s ease;
+        }
+
+        @keyframes entrada {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-box h3 {
+            font-size: 24px;
+            margin-bottom: 6px;
+            color: var(--texto);
+        }
+
+        .form-box .sub {
+            color: var(--suave);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        .campo label {
+            display: block;
+            font-size: 13px;
+            color: #374151;
+            margin-bottom: 7px;
+            font-weight: 500;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 13px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--borda);
+            background: #f9fafb;
+            color: var(--texto);
+            font-size: 14px;
+            transition: all .2s;
+        }
+
+        .campo input::placeholder {
+            color: #9ca3af;
+        }
+
+        .campo input:focus {
+            outline: none;
+            border-color: var(--verde);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--verde-escuro), var(--verde));
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: all .25s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+        }
+
+        .erro {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .extra {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--suave);
+        }
+
+        .extra a {
+            color: var(--verde-escuro);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .extra a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===================== RESPONSIVO ===================== */
+        @media (max-width: 860px) {
+            .painel {
+                display: none;
+            }
+
+            .form-lado {
+                flex: 1;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Sistema de Podologia</h1>
+    <!-- ============ LADO ESQUERDO: PAINEL COM CARA DE DASHBOARD ============ -->
+    <section class="painel">
+        <div class="topo">
+            <div class="marca">
+                <img src="/media/usuarios/" alt="">
+                    <div>
+                        <h1>Podologia</h1>
+                        <span>Clínica-Escola</span>
+                    </div>
+            </div>
+        </div>
 
-    <h2>UC-POD-01 - Login</h2>
+        <div class="chamada">
+            <h2>Cuidando da saúde dos seus pés 🌿</h2>
+            <p>Gerencie pacientes, atendimentos, evolução fotográfica e agenda em um só lugar, com toda a segurança e
+                organização que sua clínica merece.</p>
 
-    <form method="POST">
+            <!-- mini preview de indicadores (cara de dashboard) -->
+            <div class="preview">
+                <div class="mini">
+                    <div class="emoji">👤</div>
+                    <div class="num">128</div>
+                    <small>Pacientes</small>
+                </div>
+                <div class="mini">
+                    <div class="emoji">🩺</div>
+                    <div class="num">342</div>
+                    <small>Atendimentos</small>
+                </div>
+                <div class="mini">
+                    <div class="emoji">📅</div>
+                    <div class="num">7</div>
+                    <small>Hoje</small>
+                </div>
+            </div>
+        </div>
 
-        {% csrf_token %}
+        <div class="rodape-painel">Clínica-Escola de Podologia · 2026</div>
+    </section>
 
-        {{ form.as_p }}
+    <!-- ============ LADO DIREITO: FORMULÁRIO DE LOGIN ============ -->
+    <section class="form-lado">
+        <div class="form-box">
+            <h3>Bem-vindo de volta 👋</h3>
+            <p class="sub">Acesse o painel com suas credenciais</p>
 
-        <button type="submit">
-            Entrar
-        </button>
+            {% if error %}
+            <div class="erro">{{ error }}</div>
+            {% endif %}
 
-    </form>
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="campo">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" placeholder="Digite seu usuário" required
+                        autofocus>
+                </div>
+
+                <div class="campo">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+                </div>
+
+                <button type="submit" class="btn">Entrar no painel</button>
+            </form>
+
+            <div class="extra">
+                Esqueceu a senha? #
+            </div>
+        </div>
+    </section>
 
 </body>
+
 </html>
